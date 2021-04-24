@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path
+import django_heroku
 import dotenv
 
 
@@ -39,19 +40,30 @@ ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
-AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = 'users.User'
 
-LOGIN_REDIRECT_URL = "dashboard"
-LOGOUT_REDIRECT_URL = "dashboard"
+# LOGIN_REDIRECT_URL = "dashboard"
+# LOGOUT_REDIRECT_URL = "dashboard"
 
 INSTALLED_APPS = [
-    'account.apps.AccountConfig',
+    'users.apps.AccountConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # django allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # providers
+    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    'django_extensions',  # for https
 ]
 
 MIDDLEWARE = [
@@ -133,7 +145,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -142,3 +156,56 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 2
+ACCOUNT_EMAIL_VERIFICATION = "none"
+LOGIN_REDIRECT_URL = "home"
+ACCOUNT_LOGOUT_ON_GET = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    },
+    # 'facebook': {
+    #     'METHOD': 'oauth2',
+    #     'SCOPE': [
+    #         'email',
+    #         'public_profile',
+    #         'user_friends'
+    #     ],
+    #     'AUTH_PARAMS': {
+    #         'auth_type': 'reauthenticate'
+    #     },
+    #     'FIELDS': [
+    #         'id',
+    #         'email',
+    #         'name',
+    #         'first_name',
+    #         'last_name',
+    #         'verified',
+    #         'locale',
+    #         'timezone',
+    #         'link',
+    #         'gender',
+    #         'updated_time'],
+    #     'EXCHANGE_TOKEN': True,
+    #     'LOCALE_FUNC': lambda request: 'kr_KR',
+    #     'VERIFIED_EMAIL': False,
+    #     'VERSION': 'v2.4'
+    # }
+}
+
+django_heroku.settings(locals())
