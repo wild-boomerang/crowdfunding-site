@@ -13,10 +13,10 @@
             <a href="{% url 'account_logout' %}" class="btn btn-danger">Logout</a>
         {% else %}
             <a href="{% url 'account_login' %}">Login</a>
-            <a href="{% provider_login_url 'github' %}" class="btn btn-secondary">
-              <i class="fa fa-github fa-fw"></i>
-              <span>Login with GitHub</span>
-            </a>
+{#            <a href="{% provider_login_url 'github' %}" class="btn btn-secondary">#}
+{#              <i class="fa fa-github fa-fw"></i>#}
+{#              <span>Login with GitHub</span>#}
+{#            </a>#}
             <a href="{% provider_login_url 'google' %}" class="btn btn-secondary">
                 <i class="fa fa-google fa-fw"></i>
                 <span>Login with Google</span>

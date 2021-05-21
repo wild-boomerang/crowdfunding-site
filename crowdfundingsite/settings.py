@@ -60,8 +60,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     # providers
-    'allauth.socialaccount.providers.twitter',
-    'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'django_extensions',  # for https
@@ -161,10 +159,16 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+# allauth settings
 SITE_ID = int(os.environ['SITE_ID'])
 ACCOUNT_EMAIL_VERIFICATION = "none"
-LOGIN_REDIRECT_URL = "home"
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = "home"  # default to /accounts/profile
 ACCOUNT_LOGOUT_ON_GET = True
+
+ACCOUNT_FORMS = {
+    'signup': 'users.forms.CustomSignupForm',
+}
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -176,33 +180,29 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         }
     },
-    # 'facebook': {
-    #     'METHOD': 'oauth2',
-    #     'SCOPE': [
-    #         'email',
-    #         'public_profile',
-    #         'user_friends'
-    #     ],
-    #     'AUTH_PARAMS': {
-    #         'auth_type': 'reauthenticate'
-    #     },
-    #     'FIELDS': [
-    #         'id',
-    #         'email',
-    #         'name',
-    #         'first_name',
-    #         'last_name',
-    #         'verified',
-    #         'locale',
-    #         'timezone',
-    #         'link',
-    #         'gender',
-    #         'updated_time'],
-    #     'EXCHANGE_TOKEN': True,
-    #     'LOCALE_FUNC': lambda request: 'kr_KR',
-    #     'VERIFIED_EMAIL': False,
-    #     'VERSION': 'v2.4'
-    # }
+    'facebook': {
+            'METHOD': 'oauth2',
+            'SCOPE': ['email', 'public_profile', 'user_friends'],
+            'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+            'INIT_PARAMS': {'cookie': True},
+            'FIELDS': [
+                'id',
+                'email',
+                'name',
+                'first_name',
+                'last_name',
+                'verified',
+                'locale',
+                'timezone',
+                'link',
+                'gender',
+                'updated_time',
+            ],
+            'EXCHANGE_TOKEN': True,
+            # 'LOCALE_FUNC': 'path.to.callable',
+            'VERIFIED_EMAIL': False,
+            'VERSION': 'v7.0',
+        },
 }
 
 django_heroku.settings(locals())
