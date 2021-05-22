@@ -10,18 +10,18 @@
         {% if user.is_authenticated %}
             <h3>Welcome {{ user.username }}!</h3>
             <br><br>
-            <a href="{% url 'account_logout' %}" class="btn btn-danger">Logout</a>
+            <a href="{% url 'account_logout' %}" class="btn btn-outline-danger">Logout</a>
         {% else %}
-            <a href="{% url 'account_login' %}">Login</a>
+            <a class="btn btn-outline-primary" href="{% url 'account_login' %}">Login</a>
 {#            <a href="{% provider_login_url 'github' %}" class="btn btn-secondary">#}
 {#              <i class="fa fa-github fa-fw"></i>#}
 {#              <span>Login with GitHub</span>#}
 {#            </a>#}
-            <a href="{% provider_login_url 'google' %}" class="btn btn-secondary">
+            <a href="{% provider_login_url 'google' %}" class="btn btn-outline-secondary">
                 <i class="fa fa-google fa-fw"></i>
                 <span>Login with Google</span>
             </a>
-            <a href="{% provider_login_url 'facebook' %}" class="btn btn-secondary">
+            <a href="{% provider_login_url 'facebook' %}" class="btn btn-outline-secondary">
                 <i class="fa fa-facebook fa-fw"></i>
                 <span>Login with Facebook</span>
             </a>

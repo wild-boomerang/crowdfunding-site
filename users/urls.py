@@ -1,9 +1,7 @@
 from django.urls import path, include
-from .views import dashboard, register, Home
+from .views import dashboard, Home
 
 urlpatterns = [
-    # path('dashboard/', dashboard, name='dashboard'),
-    # path('accounts/', include('django.contrib.auth.urls')),
-    # path('register/', register, name='register'),
+    path('accounts/dashboard/', dashboard, name='dashboard'),
     path('', Home.as_view(), name='home'),
 ]

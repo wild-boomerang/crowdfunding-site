@@ -161,10 +161,12 @@ AUTHENTICATION_BACKENDS = (
 
 # allauth settings
 SITE_ID = int(os.environ['SITE_ID'])
-ACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = "home"  # default to /accounts/profile
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+# ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'dashboard'  # default to /accounts/profile
 ACCOUNT_LOGOUT_ON_GET = True
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ACCOUNT_FORMS = {
     'signup': 'users.forms.CustomSignupForm',

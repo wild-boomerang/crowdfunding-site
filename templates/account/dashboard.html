@@ -1,0 +1,16 @@
+{% extends 'account/base.html' %}
+
+{% block head_title %}
+    Account
+{% endblock head_title %}
+
+{% block content %}
+    Hello, {{ user.username|default:'Guest' }}!
+
+    <div>
+        {% if user.is_superuser %}
+            <a href="{% url 'admin:index' %}">Admin</a>
+        {% endif %}
+    </div>
+
+{% endblock content %}
