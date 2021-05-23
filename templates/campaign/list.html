@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head_title %}
+    {% if category %}
+        {{ category|title }} campaigns
+    {% else %}
+        Campaigns
+    {% endif %}
+{% endblock head_title %}
+
+{% block content %}
+    <div class="container">
+        <div class="sidebar">
+            <h1>Categories</h1>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link {% if not category %}active{% endif %}"
+                       href="{% url 'campaign:campaign_list' %}">All</a>
+                </li>
+                {% for ctg in categories %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if ctg.slug == category.slug %}active{% endif %}"
+                           href="{{ ctg.get_absolute_url }}">{{ ctg.name|title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <h1>{% if category %}{{ category.name|title }} campaigns{% else %}Campaigns{% endif %}</h1>
+
+        <div class="card-columns">
+            {% for campaign in campaigns %}
+                <div class="card">
+                    <div class="card-header">
+                        <a class="stretched-link" href="{{ campaign.get_absolute_url }}">{{ campaign.name }}</a>
+                    </div>
+                    <img class="card-img-top" src="{% static 'img/no_image.png' %}" alt="No image available">
+                    <div class="card-body">
+                        <p>{{ campaign.description }}</p>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                 style="width: {% get_percent campaign.pk %}%">{% get_percent campaign.pk %}%</div>
+                        </div>
+                        <p>{{ campaign.collected }} of {{ campaign.goal }}</p>
+                        {% if not category %}<p>{{ campaign.category|title }}</p>{% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <p>{{ campaign.author }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock content %}

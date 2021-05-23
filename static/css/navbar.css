@@ -1,0 +1,7 @@
+@media (min-width: 1200px) {
+    .navbar-brand.abs {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

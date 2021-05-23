@@ -1,39 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <title>{% block head_title %}{% endblock %}</title>
-    {% block extra_head %}
-    {% endblock %}
-  </head>
-  <body>
-    {% block body %}
-        <div class="container">
-            {% if messages %}
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        {% if messages %}
 {#                <div class="jumbotron">#}
-                  <ul class="list-group">
-                    {% for message in messages %}
-                        <li class="list-group-item alert alert-info alert-dismissible fade show">
+            <ul class="list-group">
+                {% for message in messages %}
+                    <li class="list-group-item alert alert-info alert-dismissible fade show">
 {#                        <div class="alert alert-info alert-dismissible fade show">#}
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{message}}
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{message}}
 {#                        </div>#}
-                        </li>
-                    {% endfor %}
-                  </ul>
+                    </li>
+                {% endfor %}
+            </ul>
 {#                </div>#}
-            {% endif %}
+        {% endif %}
 
-            <div>
-              <strong>Menu:</strong>
-              <ul>
+        <div>
+            <strong>Menu:</strong>
+            <ul>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
                     <li><a href="{% url 'account_reset_password' %}">Change password</a></li>
@@ -42,16 +27,7 @@
                     <li><a href="{% url 'account_login' %}">Sign In</a></li>
                     <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
                 {% endif %}
-              </ul>
-            </div>
-            {% block content %}
-
-            {% endblock content %}
+            </ul>
         </div>
-    {% endblock body %}
-
-    {% block extra_body %}
-
-    {% endblock extra_body %}
-  </body>
-</html>
+    </div>
+{% endblock content %}

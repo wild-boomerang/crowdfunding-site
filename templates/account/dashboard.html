@@ -11,6 +11,7 @@
         {% if user.is_superuser %}
             <a href="{% url 'admin:index' %}">Admin</a>
         {% endif %}
+        <a href="{% url 'campaign:campaign_list' %}">Go to campaign list</a>
     </div>
 
 {% endblock content %}
