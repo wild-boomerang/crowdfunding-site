@@ -11,7 +11,7 @@ class CampaignCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ('author', 'name', 'description', 'category', 'youtube_url', 'goal', 'collected', 'expiration_date',
+    list_display = ('name', 'author', 'description', 'category', 'youtube_url', 'goal', 'collected', 'expiration_date',
                     'author_slug', 'name_slug')
     list_filter = ('author', 'category', 'expiration_date')
     search_fields = ('name', 'description')
