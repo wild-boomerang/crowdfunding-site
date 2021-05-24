@@ -28,7 +28,7 @@
             </ul>
         </div>
 
-        <h1>{% if category %}{{ category.name|title }} campaigns{% else %}Campaigns{% endif %}</h1>
+{#        <h1>{% if category %}{{ category.name|title }} campaigns{% else %}Campaigns{% endif %}</h1>#}
 
         <div class="card-columns">
             {% for campaign in campaigns %}
@@ -36,18 +36,25 @@
                     <div class="card-header">
                         <a class="stretched-link" href="{{ campaign.get_absolute_url }}">{{ campaign.name }}</a>
                     </div>
-                    <img class="card-img-top" src="{% static 'img/no_image.png' %}" alt="No image available">
+                    <img class="card-img-top"
+                         {% if campaign.images.count %}
+                            src="{{ campaign.images.first.image.url }}" alt="{{ campaign.images.first.alt }}"
+                         {% else %}
+                            src="{% static 'img/no_image.png' %}" alt="No image available"
+                         {% endif %}>
                     <div class="card-body">
-                        <p>{{ campaign.description }}</p>
+                        <p>{{ campaign.description|linebreaks }}</p>
                         <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                 style="width: {% get_percent campaign.pk %}%">{% get_percent campaign.pk %}%</div>
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                 style="width: {% get_percent campaign.pk %}%">
+                                {% get_percent campaign.pk %}%
+                            </div>
                         </div>
                         <p>{{ campaign.collected }} of {{ campaign.goal }}</p>
                         {% if not category %}<p>{{ campaign.category|title }}</p>{% endif %}
                     </div>
                     <div class="card-footer">
-                        <p>{{ campaign.author }}</p>
+                        <p>by <span class="font-italic">{{ campaign.author }}</span></p>
                     </div>
                 </div>
             {% endfor %}

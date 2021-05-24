@@ -1,17 +1,18 @@
 {% extends 'account/base.html' %}
 
 {% block head_title %}
-    Account
+    {{ author.username }}'s account
 {% endblock head_title %}
 
 {% block content %}
-    Hello, {{ user.username|default:'Guest' }}!
+    <div class="container">
+        <h1>This a {{ author.username }}.</h1>
 
-    <div>
-        {% if user.is_superuser %}
-            <a href="{% url 'admin:index' %}">Admin</a>
-        {% endif %}
-        <a href="{% url 'campaign:campaign_list' %}">Go to campaign list</a>
+        <div>
+            {% if user.is_superuser %}
+                <a class="btn btn-outline-success" href="{% url 'admin:index' %}">Go to admin</a>
+            {% endif %}
+        </div>
     </div>
 
 {% endblock content %}

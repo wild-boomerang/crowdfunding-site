@@ -1,14 +1,72 @@
 {% extends 'base.html' %}
-{#{% load static %}#}
+{% load static %}
+{% load custom_tags %}
 
 {% block head_title %}
     Campaign {{ campaign.name }}
 {% endblock head_title %}
 
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+{% endblock extra_head %}
+
 {% block content %}
     <div class="container">
-        <p>{{ campaign.name }}</p>
-        <p>{{ campaign.description }}</p>
+{#        <h1>{{ campaign.name }} by <span class="font-italic">{{ campaign.author }}</span></h1>#}
+        <h1>{{ campaign.name }} by <span class="font-italic"><a href="{{ campaign.author.get_absolute_url }}">{{ campaign.author }}</a></span></h1>
+        <h2>
+            <a href="{{ campaign.category.get_absolute_url }}">
+                {{ campaign.category|title }}
+            </a>
+        </h2>
+
+        {% if campaign.images.count %}
+            <div id="campaignImages" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ul class="carousel-indicators">
+                    {% for image in campaign.images.all %}
+                        <li data-target="#campaignImages"
+                            data-slide-to="{{ forloop.counter0 }}"
+                            {% if forloop.first %}class="active"{% endif %}>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- The slideshow -->
+                <div class="carousel-inner">
+                    {% for image in campaign.images.all %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img src="{{ image.image.url }}" alt="{{ image.alt }}" width="" height="">
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#campaignImages" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#campaignImages" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+            </div>
+        {% else %}
+                <img src="{% static 'img/no_image.png' %}" alt="No image available">
+        {% endif %}
+
+        <p>{{ campaign.description|linebreaks }}</p>
+        <p>Expiration date: {{ campaign.expiration_date }}</p>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                 style="width: {% get_percent campaign.pk %}%">
+                {% get_percent campaign.pk %}%
+            </div>
+        </div>
+        <p>{{ campaign.collected }} of {{ campaign.goal }}</p>
+        {% if campaign.youtube_url %}
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="{{ campaign.youtube_url }}"></iframe>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock content %}

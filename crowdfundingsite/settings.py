@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'django_extensions',  # for https
     'campaign.apps.CampaignConfig',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -146,6 +147,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Media files
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -166,7 +172,7 @@ SITE_ID = int(os.environ['SITE_ID'])
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 # ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
-LOGIN_REDIRECT_URL = 'dashboard'  # default to /accounts/profile
+LOGIN_REDIRECT_URL = '/'  # default to /accounts/profile
 ACCOUNT_LOGOUT_ON_GET = True
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

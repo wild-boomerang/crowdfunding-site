@@ -11,12 +11,13 @@ class CampaignCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ('author', 'name', 'description', 'category', 'youtube_url', 'goal', 'collected', 'expiration_date', 'slug')
+    list_display = ('author', 'name', 'description', 'category', 'youtube_url', 'goal', 'collected', 'expiration_date',
+                    'slug')
     list_filter = ('author', 'category', 'expiration_date')
     search_fields = ('name', 'description')
     date_hierarchy = 'expiration_date'
     ordering = ('expiration_date', 'author')
-    prepopulated_fields = {'slug': ('author', 'name')}
+    # prepopulated_fields = {'slug': ('author', 'name')}
     raw_id_fields = ('author', )
 
 

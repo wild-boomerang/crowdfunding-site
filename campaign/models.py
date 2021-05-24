@@ -1,8 +1,7 @@
+from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
-
-from crowdfundingsite import settings
 
 
 class CampaignCategory(models.Model):
@@ -34,7 +33,7 @@ class Campaign(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='campaigns',
                                verbose_name='author')
     name = models.CharField(max_length=100, db_index=True)
-    slug = models.SlugField(max_length=300, db_index=True)
+    slug = models.SlugField(max_length=300, db_index=True, blank=True)
     description = models.TextField()
     category = models.ForeignKey(CampaignCategory, on_delete=models.CASCADE, related_name='campaigns')
     # tags = TaggableManager()
@@ -48,6 +47,11 @@ class Campaign(models.Model):
             models.UniqueConstraint(fields=['author', 'name'], name='uniqueAuthorPlusName')
         ]
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.author) + '-' + slugify(self.name)
+        super().save(*args, **kwargs)
+
     def get_absolute_url(self):
         return reverse('campaign:campaign_detail', args=[self.slug])
 
@@ -57,7 +61,7 @@ class Campaign(models.Model):
 
 class CampaignImage(models.Model):
     image = models.ImageField(upload_to='campaign_images', blank=True, null=True)
-    alt = models.CharField('tip', max_length=100)
+    alt = models.CharField('tip', max_length=100, default='Campaign image')
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='images', verbose_name='campaign')
 
     def __str__(self):
