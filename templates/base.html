@@ -30,9 +30,14 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'campaign:campaign_list' %}">Campaigns</a>
             </li>
-            <li class="nav-item align-self-stretch">
-                <a class="nav-link" href="{% url 'campaign:campaign_list' %}">Start a campaign</a>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Start a campaign</a>
             </li>
+            {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                </li>
+            {% endif %}
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">

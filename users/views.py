@@ -12,3 +12,7 @@ def dashboard(request, username):
     requested_user = get_user_model().objects.get(username=username)
 
     return render(request, 'account/dashboard.html', {'author': requested_user})
+
+
+class Home(TemplateView):
+    template_name = 'home.html'

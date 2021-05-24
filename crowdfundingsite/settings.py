@@ -160,6 +160,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
 
+# Allauth settings
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
@@ -167,12 +168,11 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-# allauth settings
 SITE_ID = int(os.environ['SITE_ID'])
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 # ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
-LOGIN_REDIRECT_URL = '/'  # default to /accounts/profile
+LOGIN_REDIRECT_URL = 'home'  # default to /accounts/profile
 ACCOUNT_LOGOUT_ON_GET = True
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
