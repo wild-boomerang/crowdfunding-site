@@ -37,3 +37,22 @@ def campaign_new(request):
         campaign_form = CampaignForm()
 
     return render(request, 'campaign/new.html', {'campaign_form': campaign_form})
+
+
+def campaign_edit(request, author_slug, name_slug):
+    campaign = get_object_or_404(Campaign, author_slug=author_slug, name_slug=name_slug)
+    campaign_form = CampaignForm(data=request.POST or None, instance=campaign)
+
+    if request.method == 'POST':
+        if campaign_form.is_valid():
+            campaign_form.save()
+            return redirect('campaign:campaign_detail', author_slug=author_slug, name_slug=name_slug)
+
+    return render(request, 'campaign/new.html', {'campaign_form': campaign_form})
+
+
+def campaign_delete(request, author_slug, name_slug):
+    campaign = get_object_or_404(Campaign, author_slug=author_slug, name_slug=name_slug)
+    campaign.delete()
+
+    return redirect('campaign:campaign_list')

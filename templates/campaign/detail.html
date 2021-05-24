@@ -13,12 +13,47 @@
 {% block content %}
     <div class="container">
 {#        <h1>{{ campaign.name }} by <span class="font-italic">{{ campaign.author }}</span></h1>#}
-        <h1>{{ campaign.name }} by <span class="font-italic"><a href="{{ campaign.author.get_absolute_url }}">{{ campaign.author }}</a></span></h1>
+        <h1>
+            {{ campaign.name }} by <span class="font-italic">
+            <a href="{{ campaign.author.get_absolute_url }}">{{ campaign.author }}</a></span>
+        </h1>
         <h2>
             <a href="{{ campaign.category.get_absolute_url }}">
                 {{ campaign.category|title }}
             </a>
         </h2>
+
+        {% if user.is_superuser or user == campaign.author %}
+            <a href="{% url 'campaign:campaign_edit' campaign.author_slug campaign.name_slug %}"
+               class="btn btn-outline-success"><i class="fas fa-edit"></i></a>
+
+            <button type="button" class="btn btn-outline-danger"
+                    data-toggle="modal" data-target="#confirmationModal">
+                <i class="far fa-trash-alt"></i>
+            </button>
+
+            <div class="modal fade" id="confirmationModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Confirmation</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            You are getting to delete your campaign. Are you sure?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                            <a type="button" class="btn btn-outline-danger"
+                               href="{% url 'campaign:campaign_delete' campaign.author_slug campaign.name_slug %}">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
 
         {% if campaign.images.count %}
             <div id="campaignImages" class="carousel slide" data-ride="carousel">
