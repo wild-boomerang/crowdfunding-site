@@ -16,6 +16,6 @@ def campaign_list(request, category_slug=None):
                                                   'campaigns': campaigns})
 
 
-def campaign_detail(request, campaign_slug):
-    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+def campaign_detail(request, author_slug, name_slug):
+    campaign = get_object_or_404(Campaign, author_slug=author_slug, name_slug=name_slug)
     return render(request, 'campaign/detail.html', {'campaign': campaign})

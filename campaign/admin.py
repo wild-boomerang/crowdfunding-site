@@ -12,7 +12,7 @@ class CampaignCategoryAdmin(admin.ModelAdmin):
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
     list_display = ('author', 'name', 'description', 'category', 'youtube_url', 'goal', 'collected', 'expiration_date',
-                    'slug')
+                    'author_slug', 'name_slug')
     list_filter = ('author', 'category', 'expiration_date')
     search_fields = ('name', 'description')
     date_hierarchy = 'expiration_date'
