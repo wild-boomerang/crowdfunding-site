@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Campaign, CampaignImage, Bonus, CampaignCategory, Photo
+from .models import Campaign, CampaignImage, Bonus, CampaignCategory
 
 
 @admin.register(CampaignCategory)
