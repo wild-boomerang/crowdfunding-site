@@ -16,7 +16,6 @@ import django_heroku
 import dotenv
 import dj_database_url
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -158,6 +157,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
+
+# DropBox
+# DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+DEFAULT_FILE_STORAGE = 'crowdfundingsite.dropboxstorage.DropBoxStorageFix'
+DROPBOX_OAUTH2_TOKEN = os.environ['DROPBOX_TOKEN']
 
 # Allauth settings
 AUTHENTICATION_BACKENDS = (
