@@ -49,14 +49,16 @@
                 {% if campaign.images.count %}
                     <div id="campaignImages" class="carousel slide" data-ride="carousel">
                         <!-- Indicators -->
-                        <ul class="carousel-indicators">
-                            {% for image in campaign.images.all %}
-                                <li data-target="#campaignImages"
-                                    data-slide-to="{{ forloop.counter0 }}"
-                                    {% if forloop.first %}class="active"{% endif %}>
-                                </li>
-                            {% endfor %}
-                        </ul>
+                        {% if campaign.images.count != 1 %}
+                            <ul class="carousel-indicators">
+                                {% for image in campaign.images.all %}
+                                    <li data-target="#campaignImages"
+                                        data-slide-to="{{ forloop.counter0 }}"
+                                        {% if forloop.first %}class="active"{% endif %}>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
 
                         <!-- The slideshow -->
                         <div class="carousel-inner">
@@ -68,12 +70,14 @@
                         </div>
 
                         <!-- Left and right controls -->
-                        <a class="carousel-control-prev" href="#campaignImages" data-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </a>
-                        <a class="carousel-control-next" href="#campaignImages" data-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </a>
+                        {% if campaign.images.count != 1 %}
+                            <a class="carousel-control-prev" href="#campaignImages" data-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </a>
+                            <a class="carousel-control-next" href="#campaignImages" data-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </a>
+                        {% endif %}
                     </div>
                 {% else %}
                     <img src="{% static 'img/no_image.png' %}" alt="No image available">

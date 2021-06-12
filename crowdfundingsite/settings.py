@@ -148,7 +148,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
@@ -191,28 +190,28 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     },
     'facebook': {
-            'METHOD': 'oauth2',
-            'SCOPE': ['email', 'public_profile'],
-            'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-            'INIT_PARAMS': {'cookie': True},
-            'FIELDS': [
-                'id',
-                'email',
-                'name',
-                'first_name',
-                'last_name',
-                'verified',
-                'locale',
-                'timezone',
-                'link',
-                'gender',
-                'updated_time',
-            ],
-            'EXCHANGE_TOKEN': True,
-            # 'LOCALE_FUNC': 'path.to.callable',
-            'VERIFIED_EMAIL': False,
-            'VERSION': 'v7.0',
-        },
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        # 'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v7.0',
+    },
 }
 
 django_heroku.settings(locals())

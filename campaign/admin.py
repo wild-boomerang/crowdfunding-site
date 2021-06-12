@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Campaign, CampaignImage, Bonus, CampaignCategory
+from .models import Campaign, CampaignImage, Bonus, CampaignCategory, Photo
 
 
 @admin.register(CampaignCategory)
@@ -23,7 +23,7 @@ class CampaignAdmin(admin.ModelAdmin):
 
 @admin.register(CampaignImage)
 class CampaignImageAdmin(admin.ModelAdmin):
-    list_display = ('campaign', 'alt', 'image')
+    list_display = ('image', 'campaign', 'alt')
     list_filter = ('campaign', )
     search_fields = ('campaign', 'alt', 'image')
     ordering = ('campaign', 'alt', 'image')

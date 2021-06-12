@@ -11,6 +11,44 @@
         {% else %}
             <h1>Hello, {{ user.username }}</h1>
         {% endif %}
+
+        <div class="sidebar">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#">
+                        {% if author == user %}
+                            My
+                        {% else %}
+                            {{ author }}'s
+                        {% endif %}
+                        campaigns
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="#">
+                        {% if author == user %}
+                            My
+                        {% else %}
+                            {{ author }}'s
+                        {% endif %}
+                        bonuses
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="#">
+                        {% if author == user %}
+                            My
+                        {% else %}
+                            {{ author }}'s
+                        {% endif %}
+                        personal data
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
 {% endblock content %}
