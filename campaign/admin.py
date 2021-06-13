@@ -23,7 +23,7 @@ class CampaignAdmin(admin.ModelAdmin):
 
 @admin.register(CampaignImage)
 class CampaignImageAdmin(admin.ModelAdmin):
-    list_display = ('image', 'campaign', 'alt')
+    list_display = ('alt', 'image', 'campaign')
     list_filter = ('campaign', )
     search_fields = ('campaign', 'alt', 'image')
     ordering = ('campaign', 'alt', 'image')

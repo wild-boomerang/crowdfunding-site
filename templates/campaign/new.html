@@ -12,6 +12,7 @@
                     {% bootstrap_form campaign_form %}
                     {% buttons %}
                         <button type="submit" class="btn btn-outline-success">Submit</button>
+                        <a class="btn btn-outline-secondary" href="{{ campaign.get_absolute_url }}">Cancel</a>
                     {% endbuttons %}
                 </form>
             </div>
