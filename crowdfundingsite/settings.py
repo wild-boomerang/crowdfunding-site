@@ -53,12 +53,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # cloudinary
+    'cloudinary_storage',
+    'cloudinary',
     # django allauth
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    # providers
+    # social auth providers
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'django_extensions',  # for https
@@ -150,6 +153,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+# cloudinary and CLOUDINARY_URL env var
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUDINARY_STORAGE = {
+    'PREFIX': '',
+}
+
+# DropBox
+# DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+# DEFAULT_FILE_STORAGE = 'crowdfundingsite.dropboxstorage.DropBoxStorageFix'
+# DROPBOX_OAUTH2_TOKEN = os.environ['DROPBOX_TOKEN']
+# DROPBOX_ROOT_PATH = '/media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -157,11 +172,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
-
-# DropBox
-# DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DEFAULT_FILE_STORAGE = 'crowdfundingsite.dropboxstorage.DropBoxStorageFix'
-DROPBOX_OAUTH2_TOKEN = os.environ['DROPBOX_TOKEN']
 
 # Allauth settings
 AUTHENTICATION_BACKENDS = (
