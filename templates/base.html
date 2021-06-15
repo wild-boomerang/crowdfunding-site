@@ -17,7 +17,7 @@
 <title>{% block head_title %}Crowdfunding platform{% endblock %}</title>
 {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <nav class="navbar navbar-expand-xl bg-dark navbar-dark fixed-top">
     <a class="navbar-brand abs" href="/">Crowdfunding platform</a>
 
@@ -87,6 +87,12 @@
     </ul>
 {% endif %}
 
-{% block content %}{% endblock content %}
+<main class="flex-fill">
+    {% block content %}{% endblock content %}
+</main>
+
+<footer class="footer bg-dark text-light text-center mt-2">
+    &copy; 2021 Crowdfunding platform
+</footer>
 </body>
 </html>

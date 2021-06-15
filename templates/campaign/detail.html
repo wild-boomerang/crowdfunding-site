@@ -108,9 +108,9 @@
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
                 <p>{{ campaign.description|linebreaks }}</p>
-                {% if campaign.youtube_url %}
+                {% if campaign.youtube_id %}
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="{{ campaign.youtube_url }}"></iframe>
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ campaign.youtube_id }}"></iframe>
                     </div>
                 {% endif %}
             </div>

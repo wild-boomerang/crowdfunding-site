@@ -5,15 +5,6 @@ from django.urls import reverse
 
 
 class CampaignCategory(models.Model):
-    # CATEGORY_CHOICES = (
-    #     ('electronics', 'Electronics'),
-    #     ('education', 'Education'),
-    #     ('art', 'Art'),
-    #     ('comics', 'Comics'),
-    #     ('design', 'Design'),
-    #     ('games', 'Games'),
-    #     ('music', 'Music'),
-    # )
     name = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, unique=True)
 
@@ -38,7 +29,7 @@ class Campaign(models.Model):
     description = models.TextField()
     category = models.ForeignKey(CampaignCategory, on_delete=models.CASCADE, related_name='campaigns')
     # tags = TaggableManager()
-    youtube_url = models.URLField(max_length=200, blank=True)
+    youtube_id = models.CharField(max_length=20, blank=True)
     goal = models.DecimalField(max_digits=10, decimal_places=2)
     collected = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     expiration_date = models.DateField()
