@@ -42,8 +42,7 @@ class Campaign(models.Model):
     def save(self, *args, **kwargs):
         if not self.author_slug:
             self.author_slug = slugify(self.author)
-        if not self.name_slug:
-            self.name_slug = slugify(self.name)
+        self.name_slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

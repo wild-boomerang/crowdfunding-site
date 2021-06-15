@@ -46,7 +46,7 @@ def campaign_edit(request, author_slug, name_slug):
     if request.method == 'POST':
         if campaign_form.is_valid():
             campaign_form.save()
-            return redirect('campaign:campaign_detail', author_slug=author_slug, name_slug=name_slug)
+            return redirect('campaign:campaign_detail', author_slug=campaign.author_slug, name_slug=campaign.name_slug)
 
     return render(request, 'campaign/new.html', {'campaign_form': campaign_form, 'campaign': campaign})
 
