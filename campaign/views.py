@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from campaign.models import Campaign, CampaignCategory
 from campaign.forms import CampaignForm
@@ -13,6 +14,17 @@ def campaign_list(request, category_slug=None):
     if category_slug:
         category = get_object_or_404(CampaignCategory, slug=category_slug)
         campaigns = campaigns.filter(category=category)
+
+    campaigns_num_per_page = 3
+    paginator = Paginator(campaigns, campaigns_num_per_page)
+    page_num = request.GET.get('page')
+
+    try:
+        campaigns = paginator.page(page_num)
+    except EmptyPage:  # if page is out of range
+        campaigns = paginator.page(paginator.num_pages)
+    except PageNotAnInteger:
+        campaigns = paginator.page(1)
 
     return render(request, 'campaign/list.html', {'categories': categories,
                                                   'category': category,
