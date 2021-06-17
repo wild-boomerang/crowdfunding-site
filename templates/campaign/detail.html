@@ -131,6 +131,29 @@
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
+                <h3>Similar campaigns</h3>
+                {% for similar_campaign in similar_campaigns %}
+                    <div>
+                        <a href="{{ similar_campaign.get_absolute_url }}">{{ similar_campaign.name }}</a>
+                        <a href="{{ similar_campaign.get_absolute_url }}">
+                            {% if similar_campaign.images.count %}
+                                <img class="img-fluid" src="{{ similar_campaign.images.first.image.url }}"
+                                     alt="{{ similar_campaign.images.first.alt }}" width="" height="">
+                            {% else %}
+                                <img class="img-fluid" src="{% static 'img/no_image.png' %}" alt="No image available">
+                            {% endif %}
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>There are no similar campaigns yet.</p>
+                {% endfor %}
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
                 {% with comments.count as comments_num %}
                     <h3>{{ comments_num }} comment{{ comments_num|pluralize }}</h3>
                 {% endwith %}

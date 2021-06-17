@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from taggit.models import Tag
+from django.db.models import Count
 
 from campaign.models import Campaign, CampaignCategory, Comment
 from campaign.forms import CampaignForm, CommentForm
@@ -10,16 +11,16 @@ from campaign.forms import CampaignForm, CommentForm
 
 def campaign_list(request, category_slug=None, tag_slug=None):
     categories = CampaignCategory.objects.all()
-    campaigns = Campaign.objects.all()
+    campaigns = Campaign.objects.filter(active=True)
     category = None
     if category_slug:
         category = get_object_or_404(CampaignCategory, slug=category_slug)
-        campaigns = campaigns.filter(category=category)
+        campaigns = campaigns.filter(active=True, category=category)
 
     tag = None
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
-        campaigns = campaigns.filter(tags__in=[tag])
+        campaigns = campaigns.filter(active=True, tags__in=[tag])
 
     campaigns_num_per_page = 3
     paginator = Paginator(campaigns, campaigns_num_per_page)
@@ -50,9 +51,15 @@ def campaign_detail(request, author_slug, name_slug):
             new_comment.campaign = campaign
             new_comment.save()
             return redirect('campaign:campaign_detail', author_slug, name_slug)
+
+    campaign_tags_ids = campaign.tags.values_list('id', flat=True)
+    similar_campaigns = Campaign.objects.filter(active=True, tags__in=campaign_tags_ids).exclude(id=campaign.id)
+    similar_campaigns = similar_campaigns.annotate(same_tags=Count('tags')).order_by('-same_tags', '-updated')[:5]
+
     return render(request, 'campaign/detail.html', {'campaign': campaign,
                                                     'comment_form': comment_form,
-                                                    'comments': comments})
+                                                    'comments': comments,
+                                                    'similar_campaigns': similar_campaigns})
 
 
 def comment_edit(request, author_slug, name_slug, comment_pk):

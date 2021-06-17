@@ -34,9 +34,9 @@ class Campaign(models.Model):
     goal = models.DecimalField(max_digits=10, decimal_places=2)
     collected = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     expiration_date = models.DateField()
-    # created = models.DateTimeField(auto_now_add=True)
-    # updated = models.DateTimeField(auto_now=True)
-    # active = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
 
     class Meta:
         constraints = [

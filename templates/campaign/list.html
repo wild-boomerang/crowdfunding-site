@@ -71,7 +71,7 @@
                         {% endif %}
                     </div>
                     <div class="card-footer">
-                        <p>by <span class="font-italic">{{ campaign.author }}</span></p>
+                        <p>by <a href="{{ campaign.author.get_absolute_url }}" class="font-italic">{{ campaign.author }}</a></p>
                     </div>
                 </div>
             {% endfor %}
