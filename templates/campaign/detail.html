@@ -116,6 +116,30 @@
             </div>
             <div class="col-sm-2"></div>
         </div>
+
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                {% with comments.count as comments_num %}
+                    <h3>{{ comments_num }} comment{{ comments_num|pluralize }}</h3>
+                {% endwith %}
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    <input type="submit" value="Comment">
+                </form>
+                {% for comment in comments %}
+                    <div>
+                        <a href="{{ comment.author.get_absolute_url }}">{{ comment.author }}</a> on <span class="text-muted">{{ comment.created }}</span>
+                        {{ comment.content|linebreaks }}
+                        Likes/Dislikes
+                    </div>
+                {% empty %}
+                  <p>There are no comments yet.</p>
+                {% endfor %}
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
     </div>
 
 {% endblock content %}

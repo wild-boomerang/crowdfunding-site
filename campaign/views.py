@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from campaign.models import Campaign, CampaignCategory
-from campaign.forms import CampaignForm
+from campaign.forms import CampaignForm, CommentForm
 
 
 def campaign_list(request, category_slug=None):
@@ -33,7 +33,19 @@ def campaign_list(request, category_slug=None):
 
 def campaign_detail(request, author_slug, name_slug):
     campaign = get_object_or_404(Campaign, author_slug=author_slug, name_slug=name_slug)
-    return render(request, 'campaign/detail.html', {'campaign': campaign})
+    comments = campaign.comments.filter(active=True)
+    comment_form = CommentForm(data=request.POST or None)
+
+    if request.method == 'POST':
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.author = request.user
+            new_comment.campaign = campaign
+            new_comment.save()
+            return redirect('campaign:campaign_detail', author_slug, name_slug)
+    return render(request, 'campaign/detail.html', {'campaign': campaign,
+                                                    'comment_form': comment_form,
+                                                    'comments': comments})
 
 
 @login_required

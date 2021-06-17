@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Campaign
+from .models import Campaign, Comment
 
 
 class CampaignForm(forms.ModelForm):
@@ -15,3 +15,9 @@ class CampaignForm(forms.ModelForm):
             'expiration_date': forms.SelectDateWidget()
         }
     # expiration_date = forms.DateField(widget=forms.SelectDateWidget)
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('content', )

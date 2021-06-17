@@ -33,6 +33,9 @@ class Campaign(models.Model):
     goal = models.DecimalField(max_digits=10, decimal_places=2)
     collected = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     expiration_date = models.DateField()
+    # created = models.DateTimeField(auto_now_add=True)
+    # updated = models.DateTimeField(auto_now=True)
+    # active = models.BooleanField(default=True)
 
     class Meta:
         constraints = [
@@ -74,3 +77,18 @@ class Bonus(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='comments')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    content = models.TextField()
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ('created', )
+
+    def __str__(self):
+        return f'Comment by {self.author} on {self.campaign.name}'
