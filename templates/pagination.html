@@ -1,6 +1,7 @@
 <div>
     <span>
         {% if page.has_previous %}
+            <a href="?page=1">First</a>
             <a href="?page={{ page.previous_page_number }}">
                 Previous
             </a>
@@ -10,6 +11,7 @@
             <a href="?page={{ page.next_page_number }}">
                 Next
             </a>
+            <a href="?page={{ page.paginator.num_pages }}">Last</a>
         {% endif %}
     </span>
 </div>
