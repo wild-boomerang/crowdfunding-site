@@ -28,20 +28,25 @@
             </ul>
         </div>
 
-{#        <h1>{% if category %}{{ category.name|title }} campaigns{% else %}Campaigns{% endif %}</h1>#}
+{#        {% if category %}<h1>{{ category.name|title }} campaigns{% else %}Campaigns</h1>{% endif %}#}
+        {% if tag %}
+            <h1>Campaigns tagged with "{{ tag.name }}"</h1>
+        {% endif %}
 
         <div class="card-columns mt-1">
             {% for campaign in campaigns %}
                 <div class="card">
                     <div class="card-header">
-                        <a class="stretched-link" href="{{ campaign.get_absolute_url }}">{{ campaign.name }}</a>
+                        <a href="{{ campaign.get_absolute_url }}">{{ campaign.name }}</a>
                     </div>
-                    <img class="card-img-top"
-                         {% if campaign.images.count %}
-                            src="{{ campaign.images.first.image.url }}" alt="{{ campaign.images.first.alt }}"
-                         {% else %}
-                            src="{% static 'img/no_image.png' %}" alt="No image available"
-                         {% endif %}>
+                    <a href="{{ campaign.get_absolute_url }}">
+                        <img class="card-img-top"
+                             {% if campaign.images.count %}
+                                src="{{ campaign.images.first.image.url }}" alt="{{ campaign.images.first.alt }}"
+                             {% else %}
+                                src="{% static 'img/no_image.png' %}" alt="No image available"
+                             {% endif %}>
+                    </a>
                     <div class="card-body">
                         <p>{{ campaign.description|linebreaks }}</p>
                         <div class="progress">
@@ -51,7 +56,19 @@
                             </div>
                         </div>
                         <p>{{ campaign.collected }} of {{ campaign.goal }}</p>
-                        {% if not category %}<p>{{ campaign.category|title }}</p>{% endif %}
+                        {% if not category %}
+                            <p>
+                                <a href="{{ campaign.category.get_absolute_url }}">{{ campaign.category|title }}</a>
+                            </p>
+                        {% endif %}
+                        {% if campaign.tags.count %}
+                            <p>Tags:
+                                {% for tag in campaign.tags.all %}
+                                    <a href="{% url 'campaign:campaign_list_by_tag' tag.slug %}">{{ tag.name }}</a>
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
                     </div>
                     <div class="card-footer">
                         <p>by <span class="font-italic">{{ campaign.author }}</span></p>

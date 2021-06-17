@@ -2,18 +2,24 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from taggit.models import Tag
 
 from campaign.models import Campaign, CampaignCategory, Comment
 from campaign.forms import CampaignForm, CommentForm
 
 
-def campaign_list(request, category_slug=None):
+def campaign_list(request, category_slug=None, tag_slug=None):
     categories = CampaignCategory.objects.all()
     campaigns = Campaign.objects.all()
     category = None
     if category_slug:
         category = get_object_or_404(CampaignCategory, slug=category_slug)
         campaigns = campaigns.filter(category=category)
+
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        campaigns = campaigns.filter(tags__in=[tag])
 
     campaigns_num_per_page = 3
     paginator = Paginator(campaigns, campaigns_num_per_page)
@@ -28,6 +34,7 @@ def campaign_list(request, category_slug=None):
 
     return render(request, 'campaign/list.html', {'categories': categories,
                                                   'category': category,
+                                                  'tag': tag,
                                                   'campaigns': campaigns})
 
 

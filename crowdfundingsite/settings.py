@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'django_extensions',  # for https
     'campaign.apps.CampaignConfig',
+    'taggit',
     'bootstrap4',
 ]
 

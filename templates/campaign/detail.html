@@ -92,8 +92,16 @@
                 <h3>
                     <a href="{{ campaign.category.get_absolute_url }}">
                         {{ campaign.category|title }}
-                    </a>
+                    </a> category
                 </h3>
+                {% if campaign.tags.count %}
+                    <p>Tags:
+                        {% for tag in campaign.tags.all %}
+                            <a href="{% url 'campaign:campaign_list_by_tag' tag.slug %}">{{ tag.name }}</a>
+                            {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                {% endif %}
                 <p>Expiration date: <span class="font-italic">{{ campaign.expiration_date }}</span></p>
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
