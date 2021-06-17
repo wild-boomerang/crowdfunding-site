@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from campaign.models import Campaign, CampaignCategory
+from campaign.models import Campaign, CampaignCategory, Comment
 from campaign.forms import CampaignForm, CommentForm
 
 
@@ -46,6 +46,30 @@ def campaign_detail(request, author_slug, name_slug):
     return render(request, 'campaign/detail.html', {'campaign': campaign,
                                                     'comment_form': comment_form,
                                                     'comments': comments})
+
+
+def comment_edit(request, author_slug, name_slug, comment_pk):
+    campaign = get_object_or_404(Campaign, author_slug=author_slug, name_slug=name_slug)
+    comments = campaign.comments.filter(active=True)
+    comment_to_edit = get_object_or_404(Comment, pk=comment_pk)
+    comment_form = CommentForm(data=request.POST or None, instance=comment_to_edit)
+
+    if request.method == 'POST':
+        if comment_form.is_valid():
+            comment_form.save()
+            return redirect('campaign:campaign_detail', author_slug, name_slug)
+
+    return render(request, 'campaign/detail.html', {'campaign': campaign,
+                                                    'comment_form': comment_form,
+                                                    'comments': comments,
+                                                    'comment_to_edit': comment_to_edit})
+
+
+def comment_delete(request, author_slug, name_slug, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment.delete()
+
+    return redirect('campaign:campaign_detail', author_slug, name_slug)
 
 
 @login_required

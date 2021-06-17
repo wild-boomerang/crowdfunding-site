@@ -90,5 +90,8 @@ class Comment(models.Model):
     class Meta:
         ordering = ('created', )
 
+    # def get_absolute_url(self):
+    #     return reverse('campaign:comment_edit', args=[self.pk])
+
     def __str__(self):
         return f'Comment by {self.author} on {self.campaign.name}'

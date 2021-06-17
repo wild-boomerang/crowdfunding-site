@@ -8,6 +8,7 @@
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+    <script src="{% static 'js/tooltip.js' %}"></script>
 {% endblock extra_head %}
 
 {% block content %}
@@ -18,11 +19,11 @@
                    class="btn btn-outline-success mr-2"><i class="fas fa-edit"></i></a>
 
                 <button type="button" class="btn btn-outline-danger"
-                        data-toggle="modal" data-target="#confirmationModal">
+                        data-toggle="modal" data-target="#confirmationCampaignModal">
                     <i class="far fa-trash-alt"></i>
                 </button>
 
-                <div class="modal fade" id="confirmationModal">
+                <div class="modal fade" id="confirmationCampaignModal">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -110,7 +111,9 @@
                 <p>{{ campaign.description|linebreaks }}</p>
                 {% if campaign.youtube_id %}
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ campaign.youtube_id }}"></iframe>
+                        <iframe class="embed-responsive-item"
+                                src="https://www.youtube.com/embed/{{ campaign.youtube_id }}">
+                        </iframe>
                     </div>
                 {% endif %}
             </div>
@@ -123,14 +126,62 @@
                 {% with comments.count as comments_num %}
                     <h3>{{ comments_num }} comment{{ comments_num|pluralize }}</h3>
                 {% endwith %}
+                {% if user.is_authenticated %}
                 <form method="post" action="">
                     {% csrf_token %}
                     {{ comment_form.as_p }}
-                    <input type="submit" value="Comment">
+                    <input class="btn btn-outline-success" type="submit"
+                           value="{% if comment_to_edit %}Update your comment{% else %}Comment{% endif %}">
+                    {% if comment_to_edit %}
+                        <a class="btn btn-outline-secondary" href="{{ campaign.get_absolute_url }}">Cancel</a>
+                    {% endif %}
                 </form>
+                {% else %}
+                    <p class="text-danger">To post a comment you need to <a href="{% url 'account_login' %}">login</a>
+                        or <a href="{% url 'account_signup' %}">sign up</a>.</p>
+                {% endif %}
                 {% for comment in comments %}
                     <div>
-                        <a href="{{ comment.author.get_absolute_url }}">{{ comment.author }}</a> on <span class="text-muted">{{ comment.created }}</span>
+                        {% if user.is_superuser or user == campaign.author %}
+                            <a href="{% url 'campaign:comment_edit' campaign.author_slug campaign.name_slug comment.pk %}"
+                               class="btn btn-outline-success mr-2"><i class="fas fa-edit"></i></a>
+
+                            <button type="button" class="btn btn-outline-danger"
+                                    data-toggle="modal" data-target="#confirmationComment{{ comment.pk }}Modal">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+
+                            <div class="modal fade" id="confirmationComment{{ comment.pk }}Modal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Confirmation</h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            You are getting to delete your campaign. Are you sure?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                    data-dismiss="modal">Cancel</button>
+                                            <a type="button" class="btn btn-outline-danger"
+                                               href="{% url 'campaign:comment_delete' campaign.author_slug campaign.name_slug comment.pk %}">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <a href="{{ comment.author.get_absolute_url }}">
+                            {{ comment.author }}
+                        </a> on
+                        <a href="javascript:void(0);" class="text-muted" data-toggle="tooltip" title="{{ comment.created }}">
+                            {{ comment.created|date }}
+                        </a>
+                        {% if comment.created != comment.updated %}
+                            <a href="javascript:void(0);" data-toggle="tooltip" title="{{ comment.updated }}"> (edited)</a>
+                        {% endif %}
                         {{ comment.content|linebreaks }}
                         Likes/Dislikes
                     </div>
