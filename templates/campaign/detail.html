@@ -214,7 +214,26 @@
                             <a href="javascript:void(0);" data-toggle="tooltip" title="{{ comment.updated }}"> (edited)</a>
                         {% endif %}
                         {{ comment.content|linebreaks }}
-                        Likes/Dislikes
+                        <a href="{% url 'campaign:like_process' campaign.author_slug campaign.name_slug comment.pk 'like' %}"
+                           class="btn btn-outline-success">
+                            {% is_liked user comment True as is_liked %}
+                            {% if is_liked %}
+                                <i class="fas fa-thumbs-up"></i>
+                            {% else %}
+                                <i class="far fa-thumbs-up"></i>
+                            {% endif %}
+                        </a>
+                        {% get_likes comment True %}&nbsp;
+                        <a href="{% url 'campaign:like_process' campaign.author_slug campaign.name_slug comment.pk 'dislike' %}"
+                           class="btn btn-outline-danger">
+                            {% is_liked user comment False as is_disliked %}
+                            {% if is_disliked %}
+                                <i class="fas fa-thumbs-down"></i>
+                            {% else %}
+                                <i class="far fa-thumbs-down"></i>
+                            {% endif %}
+                        </a>
+                        {% get_likes comment False %}
                     </div>
                 {% empty %}
                   <p>There are no comments yet.</p>

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Campaign, CampaignImage, Bonus, CampaignCategory, Comment
+from .models import Campaign, CampaignImage, Bonus, CampaignCategory, Comment, CommentLike
 
 
 @admin.register(CampaignCategory)
@@ -45,3 +45,11 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = ('active', 'created', 'updated')
     search_fields = ('author', 'content')
     raw_id_fields = ('author', 'campaign')
+
+
+@admin.register(CommentLike)
+class CommentLikeAdmin(admin.ModelAdmin):
+    list_display = ('is_like', 'author', 'comment')
+    list_filter = ('is_like', 'author', 'comment')
+    search_fields = ('author', 'comment')
+    raw_id_fields = ('author', 'comment')

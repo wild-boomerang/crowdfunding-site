@@ -96,3 +96,21 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.author} on {self.campaign.name}'
+
+
+class CommentLike(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='likes')
+    is_like = models.BooleanField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['author', 'comment'], name='uniqueAuthorPlusComment')
+        ]
+
+    def __str__(self):
+        if not self.is_like:
+            is_like_str = 'Dislike'
+        else:
+            is_like_str = 'Like'
+        return is_like_str + f' of {self.author} on {self.comment}'

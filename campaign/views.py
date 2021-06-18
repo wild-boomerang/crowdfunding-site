@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from taggit.models import Tag
 from django.db.models import Count
 
-from campaign.models import Campaign, CampaignCategory, Comment
+from campaign.models import Campaign, CampaignCategory, Comment, CommentLike
 from campaign.forms import CampaignForm, CommentForm
 
 
@@ -82,6 +83,29 @@ def comment_edit(request, author_slug, name_slug, comment_pk):
 def comment_delete(request, author_slug, name_slug, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
     comment.delete()
+
+    return redirect('campaign:campaign_detail', author_slug, name_slug)
+
+
+def process_like(request, author_slug, name_slug, comment_pk, like_type):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+
+    if like_type == 'like':
+        is_like = True
+    elif like_type == 'dislike':
+        is_like = False
+    else:
+        raise Http404()
+
+    like_obj, is_created = CommentLike.objects.get_or_create(author=request.user, comment=comment,
+                                                             defaults={'is_like': is_like})
+
+    if not is_created:
+        if like_obj.is_like == is_like:  # user wants to delete like or dislike
+            like_obj.delete()
+        else:  # user wants to change like to dislike or vice versa
+            like_obj.is_like = is_like
+            like_obj.save()
 
     return redirect('campaign:campaign_detail', author_slug, name_slug)
 
