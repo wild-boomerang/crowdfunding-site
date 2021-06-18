@@ -48,7 +48,7 @@
                              {% endif %}>
                     </a>
                     <div class="card-body">
-                        <p>{{ campaign.description|linebreaks }}</p>
+                        <p>{{ campaign.description|markdown|truncatewords_html:20 }}</p>
                         <div class="progress">
                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
                                  style="width: {% get_percent campaign.pk %}%">
