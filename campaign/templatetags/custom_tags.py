@@ -16,6 +16,8 @@ def get_percent(pk):
 
 @register.simple_tag
 def is_liked(author, comment, is_like):
+    if not author.is_authenticated:
+        return False
     try:
         CommentLike.objects.get(author=author, comment=comment, is_like=is_like)
         return True

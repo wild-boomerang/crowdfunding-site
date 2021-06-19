@@ -104,10 +104,11 @@
                 {% endif %}
                 <p>Expiration date: <span class="font-italic">{{ campaign.expiration_date }}</span></p>
                 <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                         style="width: {% get_percent campaign.pk %}%">
-                        {% get_percent campaign.pk %}%
-                    </div>
+                    {% get_percent campaign.pk as collected_percent %}
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                             style="width: {{ collected_percent }}%">
+                            {{ collected_percent }}%
+                        </div>
                 </div>
                 <p>{{ campaign.collected }} of {{ campaign.goal }}</p>
             </div>
@@ -158,15 +159,15 @@
                     <h3>{{ comments_num }} comment{{ comments_num|pluralize }}</h3>
                 {% endwith %}
                 {% if user.is_authenticated %}
-                <form method="post" action="">
-                    {% csrf_token %}
-                    {{ comment_form.as_p }}
-                    <input class="btn btn-outline-success" type="submit"
-                           value="{% if comment_to_edit %}Update your comment{% else %}Comment{% endif %}">
-                    {% if comment_to_edit %}
-                        <a class="btn btn-outline-secondary" href="{{ campaign.get_absolute_url }}">Cancel</a>
-                    {% endif %}
-                </form>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <input class="btn btn-outline-success" type="submit"
+                               value="{% if comment_to_edit %}Update your comment{% else %}Comment{% endif %}">
+                        {% if comment_to_edit %}
+                            <a class="btn btn-outline-secondary" href="{{ campaign.get_absolute_url }}">Cancel</a>
+                        {% endif %}
+                    </form>
                 {% else %}
                     <p class="text-danger">To post a comment you need to <a href="{% url 'account_login' %}">login</a>
                         or <a href="{% url 'account_signup' %}">sign up</a>.</p>
@@ -207,13 +208,16 @@
                         <a href="{{ comment.author.get_absolute_url }}">
                             {{ comment.author }}
                         </a> on
-                        <a href="javascript:void(0);" class="text-muted" data-toggle="tooltip" title="{{ comment.created }}">
+                        <a href="javascript:void(0);" class="text-muted" data-toggle="tooltip"
+                           title="{{ comment.created }}">
                             {{ comment.created|date }}
                         </a>
                         {% if comment.created != comment.updated %}
-                            <a href="javascript:void(0);" data-toggle="tooltip" title="{{ comment.updated }}"> (edited)</a>
+                            <a href="javascript:void(0);" data-toggle="tooltip"
+                               title="{{ comment.updated }}"> (edited)</a>
                         {% endif %}
                         {{ comment.content|linebreaks }}
+
                         <a href="{% url 'campaign:like_process' campaign.author_slug campaign.name_slug comment.pk 'like' %}"
                            class="btn btn-outline-success">
                             {% is_liked user comment True as is_liked %}

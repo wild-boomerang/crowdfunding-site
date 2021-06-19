@@ -87,6 +87,7 @@ def comment_delete(request, author_slug, name_slug, comment_pk):
     return redirect('campaign:campaign_detail', author_slug, name_slug)
 
 
+@login_required
 def process_like(request, author_slug, name_slug, comment_pk, like_type):
     comment = get_object_or_404(Comment, pk=comment_pk)
 
@@ -118,7 +119,7 @@ def campaign_new(request):
             campaign = campaign_form.save(commit=False)
             campaign.author = request.user
             campaign.save()
-            return redirect('dashboard', username=request.user.username)
+            return redirect('campaign:campaign_detail', campaign.author_slug, campaign.name_slug)
     else:
         campaign_form = CampaignForm()
 
