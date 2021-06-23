@@ -2,6 +2,7 @@
 {% load static %}
 {% load custom_tags %}
 {% load martortags %}
+{% load bootstrap4 %}
 
 {% block head_title %}
     Campaign {{ campaign.name }}
@@ -165,14 +166,28 @@
                     <h3>{{ comments_num }} comment{{ comments_num|pluralize }}</h3>
                 {% endwith %}
                 {% if user.is_authenticated %}
-                    <form method="post" action="">
+                    <form class="form" method="post" action="">
                         {% csrf_token %}
-                        {{ comment_form.as_p }}
-                        <input class="btn btn-outline-success" type="submit"
-                               value="{% if comment_to_edit %}Update your comment{% else %}Comment{% endif %}">
+
                         {% if comment_to_edit %}
-                            <a class="btn btn-outline-secondary" href="{{ campaign.get_absolute_url }}">Cancel</a>
+                            {% with 'Update your comment' as comment_placeholder %}
+                                {% bootstrap_field comment_form.content placeholder=comment_placeholder %}
+                            {% endwith %}
+                        {% else %}
+                            {% bootstrap_field comment_form.content placeholder='Write your comment' %}
                         {% endif %}
+
+                        {% buttons %}
+                            <div class="d-flex justify-content-end">
+                                {% if comment_to_edit %}
+                                    <a class="btn btn-outline-secondary mr-1" href="{{ campaign.get_absolute_url }}">
+                                        Cancel
+                                    </a>
+                                {% endif %}
+                                <input class="btn btn-outline-success" type="submit"
+                                       value="{% if comment_to_edit %}Update comment{% else %}Comment{% endif %}">
+                            </div>
+                        {% endbuttons %}
                     </form>
                 {% else %}
                     <p class="text-danger">To post a comment you need to <a href="{% url 'account_login' %}">login</a>
