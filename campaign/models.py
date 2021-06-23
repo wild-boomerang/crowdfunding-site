@@ -43,6 +43,7 @@ class Campaign(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['author', 'name'], name='uniqueAuthorPlusName')
         ]
+        ordering = ('expiration_date', )
 
     def save(self, *args, **kwargs):
         if not self.author_slug:
