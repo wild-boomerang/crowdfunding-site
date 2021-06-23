@@ -68,7 +68,36 @@ INSTALLED_APPS = [
     'campaign.apps.CampaignConfig',
     'taggit',
     'bootstrap4',
+    'martor',
 ]
+
+# martor (markdown)
+# Choices are: "semantic", "bootstrap"
+MARTOR_THEME = 'bootstrap'
+
+# Global martor settings
+# Input: string boolean, `true/false`
+MARTOR_ENABLE_CONFIGS = {
+    'emoji': 'true',        # to enable/disable emoji icons.
+    'imgur': 'true',        # to enable/disable imgur/custom uploader.
+    'mention': 'false',     # to enable/disable mention
+    'jquery': 'true',       # to include/revoke jquery (require for admin default django)
+    'living': 'false',      # to enable/disable live updates in preview
+    'spellcheck': 'false',  # to enable/disable spellcheck in form textareas
+    'hljs': 'true',         # to enable/disable hljs highlighting in preview
+}
+
+# To show the toolbar buttons
+MARTOR_TOOLBAR_BUTTONS = [
+    'bold', 'italic', 'horizontal', 'heading', 'pre-code',
+    'blockquote', 'unordered-list', 'ordered-list',
+    'link', 'image-link', 'image-upload', 'emoji',
+    'direct-mention', 'toggle-maximize', 'help'
+]
+
+# To setup the martor editor with title label in admin or not (default is False)
+MARTOR_ENABLE_LABEL = True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

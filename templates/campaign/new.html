@@ -1,22 +1,51 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load bootstrap4 %}
+
+{% block head_title %}
+    Start campaign
+{% endblock head_title %}
+
+{% block extra_head %}
+    <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+{% endblock extra_head %}
 
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-6">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
                 <h1 class="text-center">Create your campaign</h1>
-                <form class="form" action="" method="post">
+
+                <form class="form" action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% bootstrap_form campaign_form %}
                     {% buttons %}
-                        <button type="submit" class="btn btn-outline-success">Submit</button>
-                        <a class="btn btn-outline-secondary" href="{{ campaign.get_absolute_url }}">Cancel</a>
+                        <input type="submit" class="btn btn-outline-success" value="Submit">
+                        <a class="btn btn-outline-secondary"
+                           href="{% if campaign %}{{ campaign.get_absolute_url }}
+                           {% else %}{% url 'campaign:campaign_list' %}{% endif %}">
+                            Cancel
+                        </a>
                     {% endbuttons %}
                 </form>
             </div>
-            <div class="col-sm-3"></div>
+            <div class="col-sm-2"></div>
         </div>
     </div>
 {% endblock content %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/typo.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/spellcheck.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}"></script>
+{% endblock js %}

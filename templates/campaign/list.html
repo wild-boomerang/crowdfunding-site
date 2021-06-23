@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load custom_tags %}
+{% load martortags %}
 
 {% block head_title %}
     {% if category %}
@@ -9,6 +10,12 @@
         Campaigns
     {% endif %}
 {% endblock head_title %}
+
+{% block extra_head %}
+{#    for markdown#}
+    <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+{% endblock extra_head %}
 
 {% block content %}
     <div class="container">
@@ -48,7 +55,7 @@
                              {% endif %}>
                     </a>
                     <div class="card-body">
-                        <p>{{ campaign.description|markdown|truncatewords_html:20 }}</p>
+                        <p>{{ campaign.description|safe_markdown|truncatewords_html:20 }}</p>
                         <div class="progress">
                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
                                  style="width: {% get_percent campaign.pk %}%">
@@ -80,3 +87,13 @@
     </div>
 
 {% endblock content %}
+
+{% block js %}
+{#    for markdown#}
+    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+    <script>
+        $('.martor-preview pre').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+    </script>
+{% endblock js %}

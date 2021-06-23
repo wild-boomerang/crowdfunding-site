@@ -19,6 +19,7 @@ dropbox==11.10.0
 gunicorn==20.1.0
 idna==2.10
 Markdown==3.3.4
+martor==1.6.3
 oauthlib==3.1.0
 Pillow==8.2.0
 ply==3.11

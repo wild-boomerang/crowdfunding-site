@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
+from martor.models import MartorField
 from taggit.managers import TaggableManager
 
 
@@ -27,7 +28,7 @@ class Campaign(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     author_slug = models.SlugField(max_length=300, db_index=True)
     name_slug = models.SlugField(max_length=300, db_index=True)
-    description = models.TextField()
+    description = MartorField()
     category = models.ForeignKey(CampaignCategory, on_delete=models.CASCADE, related_name='campaigns')
     tags = TaggableManager(blank=True)
     youtube_id = models.CharField(max_length=20, blank=True)

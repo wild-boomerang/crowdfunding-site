@@ -1,7 +1,5 @@
-import markdown
 from django import template
 from django.shortcuts import get_object_or_404
-from django.utils.safestring import mark_safe
 
 from campaign.models import Campaign, CommentLike
 
@@ -28,11 +26,6 @@ def is_liked(author, comment, is_like):
 @register.simple_tag
 def get_likes(comment, is_like):
     return CommentLike.objects.filter(comment=comment, is_like=is_like).count()
-
-
-@register.filter(name='markdown')
-def markdown_format(text):
-    return mark_safe(markdown.markdown(text))
 
 
 @register.simple_tag

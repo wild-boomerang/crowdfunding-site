@@ -22,6 +22,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('campaigns/', include('campaign.urls', namespace='campaign')),
     path('admin/', admin.site.urls),
+    path('martor/', include('martor.urls')),
     path('', include('users.urls')),
 ]
 if settings.DEBUG:

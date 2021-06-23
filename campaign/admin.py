@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.db import models
+
+from martor.widgets import AdminMartorWidget
 
 from .models import Campaign, CampaignImage, Bonus, CampaignCategory, Comment, CommentLike
 
@@ -19,6 +22,9 @@ class CampaignAdmin(admin.ModelAdmin):
     ordering = ('expiration_date', 'author')
     # prepopulated_fields = {'slug': ('author', 'name')}
     raw_id_fields = ('author', )
+    formfield_overrides = {
+        models.TextField: {'widget': AdminMartorWidget},
+    }
 
 
 @admin.register(CampaignImage)
