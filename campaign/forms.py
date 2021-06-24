@@ -10,6 +10,21 @@ class CampaignForm(forms.ModelForm):
         model = Campaign
         fields = ('name', 'description', 'category', 'youtube_id', 'goal', 'expiration_date', 'tags', )
         widgets = {
+            # 'name': forms.TextInput(attrs={
+            #     'class': 'form-control',
+            #     'placeholder': 'Enter name'
+            # }),
+            # 'category': forms.Select(attrs={
+            #     'class': 'form-control',
+            # }),
+            # 'youtube_id': forms.TextInput(attrs={
+            #     'class': 'form-control',
+            #     'placeholder': 'Enter id of youtube video'
+            # }),
+            # 'goal': forms.NumberInput(attrs={
+            #     'class': 'form-control',
+            #     'placeholder': 'Enter id of youtube video'
+            # }),
             'expiration_date': forms.DateInput(attrs={
                 'type': 'date',
             })
@@ -30,6 +45,13 @@ class CampaignForm(forms.ModelForm):
             raise ValidationError('Invalid goal - amount is less than zero')
 
         return goal
+
+    # images = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+    #     labels = {
+    #         'name': 'Name *'
+    #     }
+# error messages
 
 
 class CommentForm(forms.ModelForm):

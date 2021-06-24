@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.datastructures import MultiValueDict
@@ -66,9 +66,13 @@ def campaign_detail(request, author_slug, name_slug):
 
 
 def comment_edit(request, author_slug, name_slug, comment_pk):
+    comment_to_edit = get_object_or_404(Comment, pk=comment_pk)
+
+    if comment_to_edit.author != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
     campaign = get_object_or_404(Campaign, author_slug=author_slug, name_slug=name_slug)
     comments = campaign.comments.filter(active=True)
-    comment_to_edit = get_object_or_404(Comment, pk=comment_pk)
     comment_form = CommentForm(data=request.POST or None, instance=comment_to_edit)
 
     if request.method == 'POST':
@@ -84,6 +88,10 @@ def comment_edit(request, author_slug, name_slug, comment_pk):
 
 def comment_delete(request, author_slug, name_slug, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
+
+    if comment.author != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
     comment.delete()
 
     return redirect('campaign:campaign_detail', author_slug, name_slug)
@@ -140,6 +148,11 @@ def campaign_new(request):
 def campaign_edit(request, author_slug, name_slug):
     campaign = get_object_or_404(Campaign, author_slug=author_slug, name_slug=name_slug)
     campaign_images = campaign.images.all()
+
+    if campaign.author != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden()
+        # raise Http404()
+
     campaign_form = CampaignForm(data=request.POST or None, instance=campaign)
 
     if request.method == 'POST':
@@ -165,6 +178,10 @@ def campaign_edit(request, author_slug, name_slug):
 
 def campaign_delete(request, author_slug, name_slug):
     campaign = get_object_or_404(Campaign, author_slug=author_slug, name_slug=name_slug)
+
+    if campaign.author != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
     campaign.delete()
 
     return redirect('campaign:campaign_list')
@@ -172,6 +189,10 @@ def campaign_delete(request, author_slug, name_slug):
 
 def campaign_images_delete(request, author_slug, name_slug):
     campaign = get_object_or_404(Campaign, author_slug=author_slug, name_slug=name_slug)
+
+    if campaign.author != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
     campaign.images.all().delete()
 
     return redirect('campaign:campaign_edit', author_slug, name_slug)
