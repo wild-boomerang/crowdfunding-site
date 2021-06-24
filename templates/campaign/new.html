@@ -10,6 +10,8 @@
     <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
     <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet" />
     <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{% static 'css/drag_and_drop.css' %}">
 {% endblock extra_head %}
 
 {% block content %}
@@ -22,13 +24,89 @@
                 <form class="form" action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% bootstrap_form campaign_form %}
+
+                    {% if campaign_images %}
+                        <div class="form-group">
+                            <h3>Current campaign images</h3>
+                            <div class="d-flex flex-wrap">
+                                {% for image in campaign_images %}
+                                    <div class="p-2">
+                                        <img width="200" src="{{ image.image.url }}" alt="{{ image.alt }}" />
+                                        <p>{{ image.alt}}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-danger"
+                                        data-toggle="modal" data-target="#deleteCurrentImages">
+                                    Delete current campaign images
+                                </button>
+                            </div>
+
+                            <div class="modal fade" id="deleteCurrentImages">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Confirmation</h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            You are getting to delete your current campaign images. Are you sure?
+                                        </div>
+                                        <div class="modal-footer d-flex">
+                                            <button type="button" class="btn btn-outline-secondary flex-fill" data-dismiss="modal">Cancel</button>
+                                            <a type="button" class="btn btn-outline-danger flex-fill"
+                                               href="{% url 'campaign:campaign_images_delete' campaign.author_slug campaign.name_slug %}">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label>
+                            {% if campaign %}
+                                Add images
+                            {% else %}
+                                Images
+                            {% endif %}
+                        </label>
+                        <div class="preview-zone d-none">
+                          <div class="box">
+                            <div class="box-header">
+                              <div><b>Preview | Images count: </b><b id="image-count"></b></div>
+                              <div class="box-tools">
+                                <button type="button" class="btn btn-outline-danger remove-preview">
+                                  <i class="fa fa-times"></i> Reset images
+                                </button>
+                              </div>
+                            </div>
+                            <div class="box-body d-flex flex-wrap"></div>
+                          </div>
+                        </div>
+                        <div class="dropzone-wrapper">
+                          <div class="dropzone-desc">
+                              <i style="font-size: 1.5em" class="fas fa-cloud-upload-alt"></i>
+                            <p>Choose an image file or drag it here.</p>
+                          </div>
+                            {{ image_form.images }}
+                        </div>
+                    </div>
+
                     {% buttons %}
-                        <input type="submit" class="btn btn-outline-success" value="Submit">
-                        <a class="btn btn-outline-secondary"
-                           href="{% if campaign %}{{ campaign.get_absolute_url }}
-                           {% else %}{% url 'campaign:campaign_list' %}{% endif %}">
-                            Cancel
-                        </a>
+                        <div class="d-flex justify-content-end">
+                            <a class="btn btn-outline-secondary mr-1 flex-fill"
+                               href="{% if campaign %}{{ campaign.get_absolute_url }}
+                               {% else %}{% url 'campaign:campaign_list' %}{% endif %}">
+                                Cancel
+                            </a>
+                            <input type="submit" class="btn btn-outline-success flex-fill" value="Submit">
+                        </div>
                     {% endbuttons %}
                 </form>
             </div>
@@ -48,4 +126,6 @@
     <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'js/drag_and_drop.js' %}"></script>
 {% endblock js %}

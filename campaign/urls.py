@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import campaign_list, campaign_detail, campaign_new, campaign_edit, campaign_delete, comment_edit, \
-                   comment_delete, process_like
+                   comment_delete, process_like, campaign_images_delete
 
 app_name = 'campaign'
 
@@ -12,6 +12,7 @@ urlpatterns = [
     path('<slug:author_slug>/<slug:name_slug>/', campaign_detail, name='campaign_detail'),
     path('<slug:author_slug>/<slug:name_slug>/edit/', campaign_edit, name='campaign_edit'),
     path('<slug:author_slug>/<slug:name_slug>/delete/', campaign_delete, name='campaign_delete'),
+    path('<slug:author_slug>/<slug:name_slug>/delete_images/', campaign_images_delete, name='campaign_images_delete'),
     path('<slug:author_slug>/<slug:name_slug>/comments/<int:comment_pk>/edit/', comment_edit, name='comment_edit'),
     path('<slug:author_slug>/<slug:name_slug>/comments/<int:comment_pk>/delete/', comment_delete,
          name='comment_delete'),

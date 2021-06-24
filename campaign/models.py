@@ -63,8 +63,12 @@ class CampaignImage(models.Model):
     alt = models.CharField('tip', max_length=100, default='Campaign image')
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='images', verbose_name='campaign')
 
+    def save(self, *args, **kwargs):
+        self.alt = self.image.name
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return self.alt
+        return f'{self.campaign} image {self.alt}'
 
 
 class Bonus(models.Model):
