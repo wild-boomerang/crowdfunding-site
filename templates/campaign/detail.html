@@ -22,12 +22,17 @@
         <div class="row d-flex justify-content-end">
             {% if user.is_superuser or user == campaign.author %}
                 <a href="{% url 'campaign:campaign_edit' campaign.author_slug campaign.name_slug %}"
-                   class="btn btn-outline-success mr-2"><i class="fas fa-edit"></i></a>
+                   class="btn btn-outline-success mr-2" data-toggle="tooltip"
+                   data-placement="left" title="Edit campaign">
+                    <i class="fas fa-edit"></i>
+                </a>
 
-                <button type="button" class="btn btn-outline-danger"
-                        data-toggle="modal" data-target="#confirmationCampaignModal">
-                    <i class="far fa-trash-alt"></i>
-                </button>
+                <span data-toggle="modal" data-target="#confirmationCampaignModal">
+                    <button type="button" class="btn btn-outline-danger"
+                            data-toggle="tooltip" data-placement="right" title="Delete campaign">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </span>
 
                 <div class="modal fade" id="confirmationCampaignModal">
                     <div class="modal-dialog">
@@ -39,9 +44,9 @@
                             <div class="modal-body">
                                 You are getting to delete your campaign. Are you sure?
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                                <a type="button" class="btn btn-outline-danger"
+                            <div class="modal-footer d-flex">
+                                <button type="button" class="btn btn-outline-secondary flex-fill" data-dismiss="modal">Cancel</button>
+                                <a type="button" class="btn btn-outline-danger flex-fill"
                                    href="{% url 'campaign:campaign_delete' campaign.author_slug campaign.name_slug %}">
                                     Delete
                                 </a>
@@ -197,12 +202,17 @@
                     <div>
                         {% if user.is_superuser or user == campaign.author %}
                             <a href="{% url 'campaign:comment_edit' campaign.author_slug campaign.name_slug comment.pk %}"
-                               class="btn btn-outline-success mr-2"><i class="fas fa-edit"></i></a>
+                               class="btn btn-outline-success mr-2"
+                               data-toggle="tooltip" data-placement="top" title="Edit comment">
+                                <i class="fas fa-edit"></i>
+                            </a>
 
-                            <button type="button" class="btn btn-outline-danger"
-                                    data-toggle="modal" data-target="#confirmationComment{{ comment.pk }}Modal">
-                                <i class="far fa-trash-alt"></i>
-                            </button>
+                            <span data-toggle="modal" data-target="#confirmationComment{{ comment.pk }}Modal">
+                                <button type="button" class="btn btn-outline-danger"
+                                        data-toggle="tooltip" data-placement="top" title="Delete comment">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                            </span>
 
                             <div class="modal fade" id="confirmationComment{{ comment.pk }}Modal">
                                 <div class="modal-dialog">
@@ -214,10 +224,10 @@
                                         <div class="modal-body">
                                             You are getting to delete your campaign. Are you sure?
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-outline-secondary"
+                                        <div class="modal-footer d-flex">
+                                            <button type="button" class="btn btn-outline-secondary flex-fill"
                                                     data-dismiss="modal">Cancel</button>
-                                            <a type="button" class="btn btn-outline-danger"
+                                            <a type="button" class="btn btn-outline-danger flex-fill"
                                                href="{% url 'campaign:comment_delete' campaign.author_slug campaign.name_slug comment.pk %}">
                                                 Delete
                                             </a>
@@ -240,7 +250,8 @@
                         {{ comment.content|linebreaks }}
 
                         <a href="{% url 'campaign:like_process' campaign.author_slug campaign.name_slug comment.pk 'like' %}"
-                           class="btn btn-outline-success">
+                           class="btn btn-outline-success"
+                           data-toggle="tooltip" data-placement="top" title="Like">
                             {% is_liked user comment True as is_liked %}
                             {% if is_liked %}
                                 <i class="fas fa-thumbs-up"></i>
@@ -250,7 +261,8 @@
                         </a>
                         {% get_likes comment True %}&nbsp;
                         <a href="{% url 'campaign:like_process' campaign.author_slug campaign.name_slug comment.pk 'dislike' %}"
-                           class="btn btn-outline-danger">
+                           class="btn btn-outline-danger"
+                           data-toggle="tooltip" data-placement="top" title="Dislike">
                             {% is_liked user comment False as is_disliked %}
                             {% if is_disliked %}
                                 <i class="fas fa-thumbs-down"></i>
